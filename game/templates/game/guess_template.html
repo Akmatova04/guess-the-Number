@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Санды Тап Оюну</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 90vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 1.1em;
+            color: #555;
+        }
+        input[type="number"], input[type="submit"], button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+        }
+        input[type="submit"], button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-color: #007bff;
+        }
+        input[type="submit"]:hover, button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .message.success {
+            color: green;
+        }
+        .message.info {
+            color: dodgerblue;
+        }
+        .message.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Санды Тап Оюну!</h1>
+
+        {% if message %}
+            <p class="message 
+                {% if 'Куттуктайм' in message %}success{% elif 'Сураныч' in message %}error{% else %}info{% endif %}">
+                {{ message }}
+            </p>
+        {% endif %}
+
+        {% if not game_over %}
+            <form method="post" action="{% url 'guess_number_url' %}">
+                {% csrf_token %}
+                <label for="guessed_number">Сиздин саныңыз (1-100):</label><br>
+                <input type="number" id="guessed_number" name="guessed_number" min="1" max="100" required autofocus>
+                <br>
+                <input type="submit" value="Текшерүү">
+            </form>
+            <p>Аракеттер: {{ attempts }}</p>
+        {% else %}
+            <form method="get" action="{% url 'new_game_url' %}">
+                <button type="submit">Жаңы оюн</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
